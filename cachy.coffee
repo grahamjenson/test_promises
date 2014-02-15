@@ -1,7 +1,7 @@
 qhttp = require("q-io/http")
 q = require('q')
 
-Testy = {
+Cachy = {
   _cache : {}
 
   write_cache: (key, data) -> @_cache[key] = data
@@ -20,7 +20,5 @@ Testy = {
     )
 }
 
-Testy.qhttp = qhttp
-
 if (typeof module != 'undefined' && module.exports)
-    module.exports = Testy;
+    module.exports = Cachy;

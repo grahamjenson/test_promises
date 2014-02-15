@@ -6,18 +6,18 @@ assert = chai.assert
 
 sinon = require 'sinon'
 
-Testy = require '../testy'
+Cachy = require '../cachy'
 
-qhttp = Testy.qhttp
+qhttp = require("q-io/http")
 q = require 'q'
 
-describe 'Testy.get', ->
+describe 'Cachy.get', ->
   describe 'if the data is cached', ->
     it 'should get the data from cache if it has it',  (done) ->
       url = 'http://www.maori.geek.nz' 
 
-      Testy.write_cache(url, {name: 'maori.geek'})
-      Testy.get(url).then( (data) ->
+      Cachy.write_cache(url, {name: 'maori.geek'})
+      Cachy.get(url).then( (data) ->
         data.name.should.equal 'maori.geek'
         done()
       )
@@ -25,7 +25,7 @@ describe 'Testy.get', ->
         done(error)
       )
       .fin( -> 
-        Testy.reset_cache()
+        Cachy.reset_cache()
       )
 
   describe 'if the data is not cached', ->
@@ -37,16 +37,16 @@ describe 'Testy.get', ->
         url.should.equal url
         return q.fcall(-> new Buffer( JSON.stringify(data) ))
       )
-      Testy.get(url).then( (data) ->
+      Cachy.get(url).then( (data) ->
         data.name.should.equal 'maori.geek'
-        Testy.read_cache(url).should.equal data
+        Cachy.read_cache(url).should.equal data
         done()
       )
       .catch( (error) ->
         done(error)
       )
       .fin( (value) ->
-        Testy.reset_cache()
+        Cachy.reset_cache()
         qhttp.read.restore()
       )
 
